@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { FlatButton } from 'material-ui';
 
 export default (cell, format, row) => {
-  switch (format) {
+  switch (format && format.type) {
     case 'link':
       return <Link style={ { color: 'black' } } to={ `${format.url}` }>{ cell }</Link>;
     case 'button':

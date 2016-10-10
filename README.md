@@ -17,10 +17,10 @@ const tableHeaders = [
   { alias: 'Birth Date', sortable: true, dataAlias: 'birth_date', format: { type: 'date' } }]
 ```
 
-alias - name of column in the column header/n
-sortable - show or not sortable icon in the column header/n
-dataAlias - property name of the object in the data array/n
-format - object that sets up any additional info about cell or custom formatting to cell in the row (Button, Link, etc)/n
+alias - name of column in the column header
+sortable - show or not sortable icon in the column header
+dataAlias - property name of the object in the data array
+format - object that sets up any additional info about cell or custom formatting to cell in the row (Button, Link, etc)
 
 example of data
 ```javascript
