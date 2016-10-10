@@ -17,10 +17,10 @@ const tableHeaders = [
   { alias: 'Birth Date', sortable: true, dataAlias: 'birth_date', format: { type: 'date' } }]
 ```
 
-alias - name of column in the column header
-sortable - show or not sortable icon in the column header
-dataAlias - property name of the object in the data array,
-format - object that sets up any additional info about cell or custom formatting to cell in the row (Button, Link, etc)
+alias - name of column in the column header/n
+sortable - show or not sortable icon in the column header/n
+dataAlias - property name of the object in the data array/n
+format - object that sets up any additional info about cell or custom formatting to cell in the row (Button, Link, etc)/n
 
 example of data
 ```javascript
@@ -29,3 +29,6 @@ example of data
   { name: "David", status: "Married", birth_date: '5 Feb 1914' },
 ]
 ```
+
+For now that is custom solution and will be changed by build-in functionality in the future release of Material UI components library
+
