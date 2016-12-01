@@ -61,6 +61,8 @@ class SmartTable extends Component {
       limit: props.limit,
       page: []
     };
+    this.sortByColumn = this.sortByColumn.bind(this)
+    this.paginate = this.paginate.bind(this)
   }
 
   componentWillMount() {
@@ -114,7 +116,7 @@ class SmartTable extends Component {
       <Table className={ styles.table } selectable={ false }>
         <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
           <TableRow>
-            { !!tableHeaders && tableHeaders.map((header, index) => (
+            { tableHeaders && tableHeaders.map((header, index) => (
               <TableHeaderColumn key={ index }>
                 <div className={ styles.rowAlign }>
                   { header.alias }
