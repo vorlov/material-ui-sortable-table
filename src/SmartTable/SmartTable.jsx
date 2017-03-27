@@ -61,8 +61,6 @@ class SmartTable extends Component {
       limit: props.limit,
       page: []
     };
-    this.sortByColumn = this.sortByColumn.bind(this)
-    this.paginate = this.paginate.bind(this)
   }
 
   componentWillMount() {
@@ -81,7 +79,10 @@ class SmartTable extends Component {
     });
   }
 
-  sortByColumn(sortHeader, data, limit) {
+  sortByColumn = (e) => {
+    const sortHeader = e.target.id;
+    const { data, limit } = this.state
+
     const isAsc = this.state.sortHeader === sortHeader ? !this.state.isAsc : true;
     const sortedData = data.sort((a, b) => sortFunc(a, b, sortHeader));
 
@@ -98,11 +99,21 @@ class SmartTable extends Component {
     });
   }
 
-  paginate(offset, limit) {
+  paginate = (offset, limit) => {
     this.setState({
       page: this.state.data.slice(offset, offset + limit),
       offset,
     });
+  }
+
+  paginateBack = () => {
+    const { offset, limit } = this.state;
+    this.paginate(offset - limit, limit);
+  }
+
+  paginateForward = () => {
+    const { offset, limit } = this.state;
+    this.paginate(offset + limit, limit);
   }
 
   render() {
@@ -124,7 +135,7 @@ class SmartTable extends Component {
                     <SortIcon
                       id={ header.dataAlias }
                       className={ styles.sortIcon }
-                      onMouseUp={ (e) => this.sortByColumn(e.target.id, this.state.data, limit) }
+                      onMouseUp={ this.sortByColumn }
                     />
                   }
                 </div>
@@ -145,10 +156,16 @@ class SmartTable extends Component {
             <TableRowColumn>
               <div className={ styles.footerControls }>
                 { `${Math.min((offset + 1), total)} - ${Math.min((offset + limit), total)} of ${total}` }
-                <IconButton disabled={ offset === 0 } onClick={ () => this.paginate(offset - limit, limit) }>
+                <IconButton
+                  disabled={ offset === 0 }
+                  onClick={ this.paginateBack }
+                >
                   <ChevronLeft />
                 </IconButton>
-                <IconButton disabled={ offset + limit >= total } onClick={ () => this.paginate(offset + limit, limit) }>
+                <IconButton
+                  disabled={ offset + limit >= total }
+                  onClick={ this.paginateForward }
+                >
                   <ChevronRight />
                 </IconButton>
               </div>
