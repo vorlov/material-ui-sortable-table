@@ -1,55 +1,23 @@
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableFooter } from 'material-ui/Table';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableRow,
+  TableFooter,
+  TableHeaderColumn,
+  TableRowColumn
+} from 'material-ui/Table';
 import { SmartTableRow } from '../SmartTableRow/SmartTableRow';
-import { TableSpinner } from '../TableSpinner/TableSpinner';
-import React, { PropTypes, Component } from 'react';
+import TableSpinner from '../TableSpinner/TableSpinner';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SortIcon from 'material-ui/svg-icons/action/swap-vert';
 import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
 import styles from './SmartTable.scss';
+import { sortFunc, processTableData } from './tableHelpers';
 
-function sortFunc(a, b, key) {
-  if (typeof (a[key]) === 'number') {
-    return a[key] - b[key];
-  }
-
-  const ax = [];
-  const bx = [];
-
-  a[key].replace(/(\d+)|(\D+)/g, (_, $1, $2) => { ax.push([$1 || Infinity, $2 || '']); });
-  b[key].replace(/(\d+)|(\D+)/g, (_, $1, $2) => { bx.push([$1 || Infinity, $2 || '']); });
-
-  while (ax.length && bx.length) {
-    const an = ax.shift();
-    const bn = bx.shift();
-    const nn = (an[0] - bn[0]) || an[1].localeCompare(bn[1]);
-    if (nn) return nn;
-  }
-
-  return ax.length - bx.length;
-}
-
-//converts object  { a: 55, b: 55, c: { d: 55 } } to { a: 55, b: 55, d: 55 }
-export function processTableData(data) {
-  if (data.constructor === Array) {
-    return data.map(obj => {
-      const newObj = {};
-
-      Object.keys(obj).forEach(key => {
-        if (typeof obj[key] === 'object') {
-          Object.keys(obj[key]).forEach(subKey => {
-            newObj[subKey] = obj[key][subKey];
-          });
-        } else {
-          newObj[key] = obj[key];
-        }
-      });
-
-      return newObj;
-    });
-  }
-  return [];
-}
 
 class SmartTable extends Component {
   constructor(props) {
@@ -59,15 +27,9 @@ class SmartTable extends Component {
       sortHeader: null,
       offset: 0,
       limit: props.limit,
-      page: []
+      page: [],
+      data: []
     };
-  }
-
-  componentWillMount() {
-    this.setState({
-      data: this.props.data,
-      page: this.props.data ? this.props.data.slice(this.state.offset, this.props.limit) : [],
-    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -100,8 +62,9 @@ class SmartTable extends Component {
   }
 
   paginate = (offset, limit) => {
+    const { data } = this.state;
     this.setState({
-      page: this.state.data.slice(offset, offset + limit),
+      page: data.slice(offset, offset + limit),
       offset,
     });
   }
@@ -124,8 +87,14 @@ class SmartTable extends Component {
     const processedData = processTableData(page);
 
     return (
-      <Table className={ styles.table } selectable={ false }>
-        <TableHeader displaySelectAll={ false } adjustForCheckbox={ false }>
+      <Table
+        className={ styles.table }
+        selectable={ false }
+      >
+        <TableHeader
+          displaySelectAll={ false }
+          adjustForCheckbox={ false }
+        >
           <TableRow>
             { tableHeaders && tableHeaders.map((header, index) => (
               <TableHeaderColumn key={ index }>
@@ -143,11 +112,21 @@ class SmartTable extends Component {
             )) }
           </TableRow>
         </TableHeader>
-        <TableBody showRowHover stripedRows displayRowCheckbox={ false } preScanRows>
+        <TableBody
+          showRowHover
+          stripedRows
+          displayRowCheckbox={ false }
+          preScanRows
+        >
           {
             (isLoading && <TableSpinner />) ||
             (processedData.map((row, index) => (
-              <SmartTableRow key={ index } { ...{ row, index, tableHeaders } } />
+              <SmartTableRow
+                index={ index }
+                key={ index }
+                row={ row}
+                tableHeaders={ tableHeaders }
+              />
             )))
           }
         </TableBody>

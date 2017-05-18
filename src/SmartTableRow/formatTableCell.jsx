@@ -6,7 +6,14 @@ import { FlatButton } from 'material-ui';
 export default (cell, format, row) => {
   switch (format && format.type) {
     case 'link':
-      return <Link style={ { color: 'black' } } to={ `${format.url}` }>{ cell }</Link>;
+      return (
+        <Link
+          style={ { color: 'black' } }
+          to={ `${format.url}` }
+        >
+          { cell }
+        </Link>
+      );
     case 'button':
       return (
         <FlatButton

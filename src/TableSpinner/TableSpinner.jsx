@@ -9,5 +9,5 @@ const TableSpinner = () => (
   </tr>
 );
 
-export { TableSpinner };
+export default TableSpinner;
 
