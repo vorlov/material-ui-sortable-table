@@ -3,7 +3,7 @@
   padding-top: 30px;
 }
 
-.rowAlign {
+.headerColumn {
   display: flex;
   align-items: center;
 }
@@ -17,7 +17,7 @@
 .sortIcon {
   cursor: pointer;
   path {
-    fill: rgb(255, 255, 255) !important;
+    fill: black !important;
     pointer-events: none;
   }
 }

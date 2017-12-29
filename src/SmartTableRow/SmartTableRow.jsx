@@ -1,21 +1,24 @@
 import { TableRow, TableRowColumn } from 'material-ui/Table';
-import React, { PropTypes } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import formatTableCell from './formatTableCell';
 
-const SmartTableRow = ({ index, row, tableHeaders }) => (
-  <TableRow key={ index }>
-    { tableHeaders.map((header, propIndex) => (
+const SmartTableRow = ({
+  row,
+  headers
+}) => (
+  <TableRow>
+    { headers.map((header, propIndex) => (
       <TableRowColumn key={ propIndex }>
-        { formatTableCell(row[header.dataAlias], header.format, row) }
+        { formatTableCell(row[header.dataAlias], header.format) }
       </TableRowColumn>
     )) }
   </TableRow>
 )
 
 SmartTableRow.propTypes = {
-  index: PropTypes.number.isRequired,
   row: PropTypes.object.isRequired,
-  tableHeaders: PropTypes.array.isRequired
+  headers: PropTypes.array.isRequired
 };
 
 export default SmartTableRow;

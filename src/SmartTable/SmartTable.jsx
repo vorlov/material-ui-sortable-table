@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Table,
   TableBody,
@@ -7,17 +9,14 @@ import {
   TableHeaderColumn,
   TableRowColumn
 } from 'material-ui/Table';
-import { SmartTableRow } from '../SmartTableRow/SmartTableRow';
-import TableSpinner from '../TableSpinner/TableSpinner';
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import SortIcon from 'material-ui/svg-icons/action/swap-vert';
 import IconButton from 'material-ui/IconButton';
 import ChevronLeft from 'material-ui/svg-icons/navigation/chevron-left';
 import ChevronRight from 'material-ui/svg-icons/navigation/chevron-right';
+import SmartTableRow from '../SmartTableRow/SmartTableRow';
+import TableSpinner from '../TableSpinner/TableSpinner';
 import styles from './SmartTable.scss';
-import { sortFunc, processTableData } from './tableHelpers';
-
+import sortFunc from './sortFunc';
 
 class SmartTable extends Component {
   constructor(props) {
@@ -27,23 +26,26 @@ class SmartTable extends Component {
       sortHeader: null,
       offset: 0,
       limit: props.limit,
-      page: [],
-      data: []
+      data: props.data,
+      page: props.data.slice(0, props.limit)
     };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      offset: 0,
       sortHeader: null,
+      offset: 0,
       data: nextProps.data,
-      page: nextProps.data ? nextProps.data.slice(this.state.offset, nextProps.limit) : [],
+      page: nextProps.data.slice(this.state.offset, nextProps.limit)
     });
   }
 
   sortByColumn = (e) => {
     const sortHeader = e.target.id;
-    const { data, limit } = this.state
+    const {
+      data,
+      limit
+    } = this.state
 
     const isAsc = this.state.sortHeader === sortHeader ? !this.state.isAsc : true;
     const sortedData = data.sort((a, b) => sortFunc(a, b, sortHeader));
@@ -81,10 +83,17 @@ class SmartTable extends Component {
 
   render() {
 
-    const { total, tableHeaders, isLoading } = this.props;
-    const { offset, limit, page } = this.state;
+    const {
+      total,
+      headers,
+      isLoading
+    } = this.props;
 
-    const processedData = processTableData(page);
+    const {
+      offset,
+      limit,
+      page
+    } = this.state;
 
     return (
       <Table
@@ -96,9 +105,9 @@ class SmartTable extends Component {
           adjustForCheckbox={ false }
         >
           <TableRow>
-            { tableHeaders && tableHeaders.map((header, index) => (
+            { headers && headers.map((header, index) => (
               <TableHeaderColumn key={ index }>
-                <div className={ styles.rowAlign }>
+                <div className={ styles.headerColumn }>
                   { header.alias }
                   { header.sortable &&
                     <SortIcon
@@ -118,16 +127,15 @@ class SmartTable extends Component {
           displayRowCheckbox={ false }
           preScanRows
         >
-          {
-            (isLoading && <TableSpinner />) ||
-            (processedData.map((row, index) => (
+          { isLoading && <TableSpinner /> }
+          { !isLoading &&
+            page.map((row, index) => (
               <SmartTableRow
-                index={ index }
                 key={ index }
-                row={ row}
-                tableHeaders={ tableHeaders }
+                row={ row }
+                headers={ headers }
               />
-            )))
+            ))
           }
         </TableBody>
         <TableFooter>
@@ -156,8 +164,14 @@ class SmartTable extends Component {
   }
 }
 
+SmartTable.defaultProps = {
+  limit: 40,
+  data: [],
+  isLoading: false
+}
+
 SmartTable.propTypes = {
-  tableHeaders: PropTypes.array,
+  headers: PropTypes.array.isRequired,
   data: PropTypes.array,
   offset: PropTypes.number, // current offset
   total: PropTypes.number, // total number of rows

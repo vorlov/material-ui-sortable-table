@@ -1,0 +1,57 @@
+{
+  "name": "material-ui-sortable-table",
+  "version": "1.0.0",
+  "description": "Material UI Table with sorting functionality",
+  "scripts": {
+    "dev": "node index.js",
+    "lint": "eslint src",
+    "lint-fix": "eslint src --fix"
+  },
+  "engines": {
+    "node": "8.9.0",
+    "npm": "5.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vorlov/material-ui-sortable-table.git"
+  },
+  "private": false,
+  "author": "Vadym Orlov",
+  "dependencies": {
+    "material-ui": "0.20.0",
+    "react": "16.2.0",
+    "react-dom": "16.2.0",
+    "prop-types": "15.6.0",
+    "express": "4.16.2",
+    "proxy-middleware": "0.15.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "7.2.3",
+    "babel-core": "6.26.0",
+    "babel-eslint": "8.1.2",
+    "babel-loader": "7.1.2",
+    "babel-polyfill": "6.26.0",
+    "babel-preset-es2015": "6.24.1",
+    "babel-preset-react": "6.24.1",
+    "babel-preset-stage-0": "6.24.1",
+    "babel-register": "6.26.0",
+    "css-loader": "0.28.7",
+    "eslint": "4.14.0",
+    "eslint-config-airbnb": "16.1.0",
+    "eslint-loader": "1.9.0",
+    "eslint-plugin-babel": "4.1.2",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-css-modules": "2.7.5",
+    "eslint-plugin-jsx-a11y": "6.0.3",
+    "eslint-plugin-react": "7.5.1",
+    "file-loader": "1.1.6",
+    "node-sass": "4.7.2",
+    "postcss-loader": "2.0.9",
+    "react-hot-loader": "3.1.3",
+    "sass-loader": "6.0.6",
+    "style-loader": "0.19.1",
+    "webpack": "3.10.0",
+    "webpack-dev-server": "2.9.7",
+    "webpack-merge": "4.1.1"
+  }
+}
